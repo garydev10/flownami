@@ -1,5 +1,6 @@
 // @ts-types="npm:@types/express"
 import express from "npm:express";
+import { Task } from "./types/task.ts";
 
 const app = express();
 
@@ -11,10 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", function (_req, res) {
   res.render("pages/index");
 });
-
-type Task = {
-  name: string;
-};
 
 type Column = {
   name: string;
