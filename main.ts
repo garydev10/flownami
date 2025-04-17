@@ -1,5 +1,6 @@
 // @ts-types="npm:@types/express"
 import express from "npm:express";
+import { randomUUID, UUID } from "node:crypto";
 import { Task } from "./types/task.ts";
 
 const app = express();
@@ -39,7 +40,7 @@ async function readTasks() {
 app.post("/tasks", async (req, res) => {
   const taskName = req.body.taskName;
 
-  const newTask = { name: taskName };
+  const newTask = { name: taskName, id: randomUUID() };
 
   const columns = await readTasks();
 

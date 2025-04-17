@@ -2,28 +2,37 @@
   {
     "name": "To Do",
     "tasks": [
-      { "name": "Hello" },
-      { "name": "Test" },
-      { "name": "Mega Test" },
-      { "name": "Test 4" },
-      { "name": "asdf" },
-      { "name": "Hello world" },
-      { "name": "TEasting" },
-      { "name": "Tasks" },
-      { "name": "Refactor" },
-      { "name": "Testytest" },
-      { "name": "Go" }
+      { "name": "Hello", "id": "cc5bec88-e85c-4db8-bcf3-779abd59c615" },
+      { "name": "Test", "id": "77c349a6-fa12-40f1-837d-289ea88c9786" },
+      { "name": "Mega Test", "id": "5831d139-6af3-4c60-92c6-f8e606f1ee8d" },
+      { "name": "Test 4", "id": "df3c2a33-1a92-405d-aa02-304678c31102" },
+      { "name": "asdf", "id": "98d25147-dab1-445e-bb58-ab6eab33d04a" },
+      { "name": "Hello world", "id": "0d1d982a-07b0-4c97-8ba1-7cf6e1a7a1ae" },
+      { "name": "TEasting", "id": "542ef6ee-36d0-44aa-bd9b-4936e608af2c" },
+      { "name": "Tasks", "id": "56d9f076-5d5d-4723-bfbc-04ce279a1971" },
+      { "name": "Refactor", "id": "38a22b2b-6867-46e9-b6fd-a3fa298056b0" },
+      { "name": "Testytest", "id": "90764725-a6ac-420d-aba9-81da391f9762" },
+      { "name": "Go", "id": "e31e7bd6-91bf-4483-be4f-dbaa8f9e6e36" },
+      { "name": "Test", "id": "db6ca955-ccd6-46de-bdbd-5962c41ca0c0" }
     ]
   },
-  { "name": "Doing", "tasks": [{ "name": "In progress..." }] },
+  {
+    "name": "Doing",
+    "tasks": [
+      { "name": "In progress...", "id": "3d5b4d82-fdf5-487b-809a-63462df78bcb" }
+    ]
+  },
   {
     "name": "Done",
     "tasks": [
-      { "name": "Finished this one" },
-      { "name": "And this one" },
-      { "name": "Crikey," },
-      { "name": "Wasn't I..." },
-      { "name": "Productive!" }
+      {
+        "name": "Finished this one",
+        "id": "e72d8fbe-7e71-4fc9-9162-98526bb8b015"
+      },
+      { "name": "And this one", "id": "bf6366a1-4476-4727-a481-ba831017c707" },
+      { "name": "Crikey,", "id": "e2a506b3-7ed2-418d-b17f-915416751e70" },
+      { "name": "Wasn't I...", "id": "0fa54cc3-3a10-4c84-9ed5-17da14c0f471" },
+      { "name": "Productive!", "id": "d46c713e-f9ad-474f-b6ca-06a08caf9f2a" }
     ]
   }
 ]
