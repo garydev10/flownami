@@ -28,6 +28,18 @@ app.get("/tasks/new", (_req, res) => {
   res.render("pages/create");
 });
 
+app.get("/tasks/edit/:id", async (_req, res) => {
+  const id = _req.params.id;
+  const columns = await readTasks();
+  const allTasks = columns.map((col: Column) => col.tasks).flat();
+  const task = allTasks.filter((t: Task) => (t.id as string) === id)[0];
+  if (task !== undefined) {
+    res.render("pages/edit", { task });
+  } else {
+    res.redirect("/board");
+  }
+});
+
 async function writeTasks(tasks: Task[]) {
   await Deno.writeTextFile("./data.json", JSON.stringify(tasks));
 }
