@@ -9,6 +9,7 @@ app.set("view engine", "ejs");
 
 app.use(express.static("static"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.get("/", function (_req, res) {
   res.render("pages/index");
@@ -18,6 +19,19 @@ type Column = {
   name: string;
   tasks: Array<Task>;
 };
+
+async function updateTask(task: Task) {
+  let columns = await readTasks();
+  columns = columns.map((col: Column) => {
+    return {
+      ...col,
+      tasks: col.tasks.map((t: Task) =>
+        (t.id === task.id) ? { ...t, name: task.name } : t
+      ),
+    };
+  });
+  await writeTasks(columns);
+}
 
 app.get("/board", async function (_req, res) {
   const columns = await readTasks();
@@ -61,6 +75,13 @@ app.post("/tasks", async (req, res) => {
   await writeTasks(columns);
 
   res.redirect("/board");
+});
+
+app.put("/tasks", async (req, res) => {
+  const { id, name } = req.body;
+  const task: Task = { id, name };
+  await updateTask(task);
+  res.status(200).json({ message: "success" });
 });
 
 if (import.meta.main) {
