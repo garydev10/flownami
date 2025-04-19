@@ -20,13 +20,13 @@ type Column = {
   tasks: Array<Task>;
 };
 
-async function updateTask(task: Task) {
+async function updateTask(id: UUID, name: string) {
   let columns = await readTasks();
   columns = columns.map((col: Column) => {
     return {
       ...col,
       tasks: col.tasks.map((t: Task) =>
-        (t.id === task.id) ? { ...t, name: task.name } : t
+        (t.id === id) ? { ...t, name: name } : t
       ),
     };
   });
@@ -79,8 +79,7 @@ app.post("/tasks", async (req, res) => {
 
 app.put("/tasks", async (req, res) => {
   const { id, name } = req.body;
-  const task: Task = { id, name };
-  await updateTask(task);
+  await updateTask(id, name);
   res.status(200).json({ message: "success" });
 });
 
