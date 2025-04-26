@@ -1,4 +1,19 @@
 <article class="task">
-  <h1><%= name %></h1>
-  <a href="/tasks/edit/<%= id %>">Edit</a>
+  <h1 data-id="<%= id %>" class="name-display"><%= name %></h1>
+  <button class="edit-button" data-id="<%= id %>">Edit</button>
+  <input
+    style="display: none"
+    type="input"
+    class="name-edit"
+    data-id="<%= id %>"
+    name="taskName"
+    value="<%= name %>"
+    placeholder="name"
+  />
+  <button style="display: none" class="ok-button" data-id="<%= id %>">
+    OK
+  </button>
+  <button style="display: none" class="cancel-button" data-id="<%= id %>">
+    Cancel
+  </button>
 </article>
