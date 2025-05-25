@@ -1,103 +1,125 @@
-import { Task } from "../tasks/Task.ts";
-import { TaskRepo } from "../data.ts";
+import { assertSpyCallAsync, spy, stub } from "jsr:@std/testing/mock";
 import { addNewTask, findTaskById, removeTask, updateTask } from "./service.ts";
-import { assertSpyCall, spy } from "@std/testing/mock";
-import { assertEquals } from "jsr:@std/assert";
+import { TaskRepo } from "../data.ts";
+import { Task } from "./Task.ts";
+import { UUID } from "node:crypto";
 
-Deno.test("addNewTask", async () => {
-  const fakeTask: Task = {
-    id: "some-id",
-    name: "Some Name",
-    column: "To Do",
-  };
+Deno.test("Add a Task to the repository", async () => {
+  const fakeTasks: Task[] = [];
 
-  const fakeTasks: Task[] = [fakeTask];
-
-  const readTasksSpy = spy(() => fakeTasks);
-  const writeTasksSpy = spy((fakeTask) => {});
+  const readTasksSpy = spy(() => Promise.resolve(fakeTasks));
+  const writeTasksSpy = spy(() => Promise.resolve());
+  const randomUuidStub = stub(crypto, "randomUUID", () => "some-id" as UUID);
 
   const taskRepo = {
-    readTasks: readTasksSpy,
     writeTasks: writeTasksSpy,
+    readTasks: readTasksSpy,
   } as unknown as TaskRepo;
 
-  await addNewTask(taskRepo, "Some new task name");
-  assertSpyCall(writeTasksSpy, 0);
+  await addNewTask("New Test Task", taskRepo);
+
+  const newTask: Task = {
+    id: "some-id",
+    name: "New Test Task",
+    column: "To Do",
+  };
+  const expectedTasks: Task[] = [
+    newTask,
+  ];
+
+  await assertSpyCallAsync(writeTasksSpy, 0, { args: [expectedTasks] });
+  randomUuidStub.restore();
 });
 
-Deno.test("findTaskById", async () => {
-  const fakeTask: Task = {
+Deno.test("Find a task by ID", async () => {
+  const newTask: Task = {
     id: "some-id",
-    name: "Some Name",
+    name: "New Test Task",
     column: "To Do",
   };
+  const fakeTasks: Task[] = [newTask];
 
-  const fakeTasks: Task[] = [fakeTask];
-
-  const readTasksSpy = spy(() => fakeTasks);
-  const writeTasksSpy = spy((fakeTask) => {});
+  const readTasksSpy = spy(() => Promise.resolve(fakeTasks));
+  const writeTasksSpy = spy(() => Promise.resolve());
 
   const taskRepo = {
-    readTasks: readTasksSpy,
     writeTasks: writeTasksSpy,
+    readTasks: readTasksSpy,
   } as unknown as TaskRepo;
 
-  const expectedTask: Task = { ...fakeTask };
+  await findTaskById("some-id", taskRepo);
 
-  const task: Task | undefined = await findTaskById(
-    taskRepo,
-    "some-id",
-  );
-  assertEquals(task, expectedTask);
+  await assertSpyCallAsync(readTasksSpy, 0, { args: [], returned: fakeTasks });
 });
 
-Deno.test("updateTask", async () => {
-  const fakeTask: Task = {
+Deno.test("Update a Task", async () => {
+  const newTask: Task = {
     id: "some-id",
-    name: "Some Name",
+    name: "New Test Task",
     column: "To Do",
   };
+  const fakeTasks: Task[] = [newTask];
 
-  const fakeTasks: Task[] = [fakeTask];
-
-  const readTasksSpy = spy(() => fakeTasks);
-  const writeTasksSpy = spy((fakeTask) => {});
+  const readTasksSpy = spy(() => Promise.resolve(fakeTasks));
+  const writeTasksSpy = spy(() => Promise.resolve());
 
   const taskRepo = {
-    readTasks: readTasksSpy,
     writeTasks: writeTasksSpy,
+    readTasks: readTasksSpy,
   } as unknown as TaskRepo;
 
-  let expectedTask: Task = { ...fakeTask };
-  expectedTask.name = "Some Name 2";
+  await findTaskById("some-id", taskRepo);
 
-  await updateTask(
-    taskRepo,
-    expectedTask,
-  );
-  assertSpyCall(writeTasksSpy, 0);
+  await assertSpyCallAsync(readTasksSpy, 0, { args: [], returned: fakeTasks });
 });
 
-Deno.test("removeTask", async () => {
-  const fakeTask: Task = {
+Deno.test("Update a Task", async () => {
+  const newTask: Task = {
     id: "some-id",
-    name: "Some Name",
+    name: "New Test Task",
     column: "To Do",
   };
+  const fakeTasks: Task[] = [newTask];
 
-  const fakeTasks: Task[] = [fakeTask];
-
-  const readTasksSpy = spy(() => fakeTasks);
-  const writeTasksSpy = spy((fakeTask) => {});
+  const readTasksSpy = spy(() => Promise.resolve(fakeTasks));
+  const writeTasksSpy = spy(() => Promise.resolve());
 
   const taskRepo = {
-    readTasks: readTasksSpy,
     writeTasks: writeTasksSpy,
+    readTasks: readTasksSpy,
   } as unknown as TaskRepo;
 
-  await removeTask(
-    taskRepo,
-    "some-id",
-  );
-  assertSpyCall(writeTasksSpy, 0);
+  const updatedTask: Task = {
+    id: "some-id",
+    name: "New Test Task Updated",
+    column: "To Do",
+  };
+  await updateTask(updatedTask, taskRepo);
+
+  await assertSpyCallAsync(writeTasksSpy, 0, {
+    args: [[updatedTask]],
+  });
+});
+
+Deno.test("Remove a Task", async () => {
+  const newTask: Task = {
+    id: "some-id",
+    name: "New Test Task",
+    column: "To Do",
+  };
+  const fakeTasks: Task[] = [newTask];
+
+  const readTasksSpy = spy(() => Promise.resolve(fakeTasks));
+  const writeTasksSpy = spy(() => Promise.resolve());
+
+  const taskRepo = {
+    writeTasks: writeTasksSpy,
+    readTasks: readTasksSpy,
+  } as unknown as TaskRepo;
+
+  await removeTask("some-id", taskRepo);
+
+  await assertSpyCallAsync(writeTasksSpy, 0, {
+    args: [[]],
+  });
 });
